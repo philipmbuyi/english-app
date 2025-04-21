@@ -3,16 +3,17 @@ from pymysql.cursors import DictCursor
 from werkzeug.security import generate_password_hash, check_password_hash
 import random
 import string
+import os
 print("Loading database.py")
 class Database:
-    def __init__(self, host='localhost', user='root', password='1a2b3c4d', db='mysql'):
-        self.host = host
-        self.user = user
-        self.password = password
-        self.db = db
+    def __init__(self):
+        self.host = os.getenv('DB_HOST', 'localhost')
+        self.user = os.getenv('DB_USER', 'root')
+        self.password = os.getenv('DB_PASSWORD', '')
+        self.db = os.getenv('DB_NAME', 'mysql')
+        self.port = int(os.getenv('DB_PORT', 3306))
         self.charset = 'utf8mb4'
         self.cursorclass = DictCursor
-        
 
     def get_connection(self):
         return pymysql.connect(
@@ -20,8 +21,10 @@ class Database:
             user=self.user,
             password=self.password,
             db=self.db,
+            port=self.port,
             charset=self.charset,
-            cursorclass=self.cursorclass
+            cursorclass=self.cursorclass,
+            ssl={"ssl": {}}  # Aiven requires SSL
         )
 
     def init_db(self):
