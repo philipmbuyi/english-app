@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}{{ module_title }} - {{ lesson.title }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/lesson.css') }}">
+{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('home') }}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('module', module_name=module_name) }}">{{ module_title }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ lesson.title }}</li>
+    </ol>
+</nav>
+
+<div class="card">
+    <div class="card-header">
+        <h3>{{ lesson.title }}</h3>
+    </div>
+    <div class="card-body">
+        <!-- Video Section -->
+        {% if lesson.video %}
+        <div class="video-container mb-4">
+            <video controls width="100%" poster="{{ lesson.video.poster or '' }}">
+                <source src="{{ url_for('serve_lesson_video', module_name=module_name, lesson_id=lesson.id) }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        {% endif %}
+
+        <p>{{ lesson.content }}</p>
+        
+        {% if module_name == 'grammar' %}
+        <div class="mt-4">
+            <h5>Practice Exercise</h5>
+            <div class="p-3 bg-light rounded">
+                <p>Fill in the blanks with the correct form of the verb:</p>
+                <p>1. She _____ (go) to school every day.</p>
+                <p>2. They _____ (watch) a movie right now.</p>
+            </div>
+        </div>
+        {% elif module_name == 'writing' %}
+        <div class="mt-4">
+            <h5>Writing Prompt</h5>
+            <div class="p-3 bg-light rounded">
+                <p>Write a 100-word paragraph about your daily routine.</p>
+                <textarea class="form-control mt-2" rows="5" placeholder="Type your response here..."></textarea>
+                <button class="btn btn-primary mt-2">Submit</button>
+            </div>
+        </div>
+        {% elif module_name == 'pronunciation' %}
+        <div class="mt-4">
+            <h5>Pronunciation Practice</h5>
+            <div class="p-3 bg-light rounded">
+                <p>Listen and repeat these words:</p>
+                <p><strong>Ship</strong> vs <strong>Sheep</strong></p>
+                <p><strong>Bit</strong> vs <strong>Beat</strong></p>
+                <button class="btn btn-primary mt-2">
+                    <i class="fas fa-microphone"></i> Record Your Voice
+                </button>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="mt-3 d-flex justify-content-between">
+    <a href="{{ url_for('module', module_name=module_name) }}" class="btn btn-secondary">Back to Module</a>
+    {% if quiz_id %}
+    <a href="{{ url_for('take_quiz', module_name=module_name, quiz_id=1) }}" class="btn btn-primary">Take Quiz</a>
+    {% endif %}
+</div>
+{% endblock %}

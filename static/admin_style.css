@@ -1,0 +1,253 @@
+/* Admin Dashboard Specific Styles */
+
+.dashboard-container {
+    padding: 20px;
+    background-color: var(--background-color);
+}
+
+.dashboard-container header {
+    margin-bottom: 20px;
+}
+
+.dashboard-container header h1 {
+    font-size: 1.8rem;
+    color: var(--text-color);
+    margin-bottom: 10px;
+}
+
+/* Navigation Styles */
+.dashboard-container nav ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.dashboard-container nav ul li {
+    margin: 0;
+    padding: 0;
+}
+
+.dashboard-container nav ul li a {
+    display: block;
+    padding: 12px 20px;
+    text-decoration: none;
+    color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+.dashboard-container nav ul li a:hover {
+    background-color: #f1f1f1;
+}
+
+.dashboard-container nav ul li a.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Section Styles */
+.dashboard-section {
+    background-color: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+.dashboard-section h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    color: var(--text-color);
+}
+
+/* Table Styles */
+#student-table-container, #marks-table {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+table th, table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+table tr:hover {
+    background-color: #f9f9f9;
+}
+
+/* Button Styles */
+.view-details, .edit-mark {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.view-details:hover, .edit-mark:hover {
+    background-color: #2980b9;
+}
+
+/* Form and Input Styles */
+.progress-filter, .marks-filter {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+}
+
+input[type="number"], input[type="text"], input[type="date"], input[type="time"] {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-right: 10px;
+    font-size: 14px;
+}
+
+button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+#test-schedule-form {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+#test-schedule-form label {
+    display: inline-block;
+    width: 100px;
+    margin-bottom: 10px;
+}
+
+/* Canvas (Chart) Styles */
+canvas {
+    max-width: 100%;
+    margin-top: 20px;
+    background-color: white;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+/* Feedback Messages */
+#test-schedule-feedback, #marks-management-feedback {
+    margin-top: 15px;
+}
+
+.alert {
+    padding: 12px 15px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+/* Modal styles */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1040;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1050;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    outline: 0;
+}
+
+.modal-dialog {
+    position: relative;
+    width: auto;
+    margin: 1.75rem auto;
+    max-width: 500px;
+}
+
+.modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 0.3rem;
+    outline: 0;
+}
+
+.modal-header, .modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.modal-footer {
+    border-top: 1px solid #dee2e6;
+    border-bottom: none;
+}
+
+.modal-body {
+    position: relative;
+    flex: 1 1 auto;
+    padding: 1rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .dashboard-container nav ul {
+        flex-direction: column;
+    }
+    
+    input[type="number"], input[type="text"], input[type="date"], input[type="time"] {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    #test-schedule-form label {
+        display: block;
+        width: 100%;
+    }
+}

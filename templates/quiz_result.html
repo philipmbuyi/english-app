@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Quiz Results{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header bg-success text-white">
+        <h3>Quiz Results</h3>
+    </div>
+    <div class="card-body text-center">
+        <h4 class="mb-4">You scored {{ score }} out of {{ total }}</h4>
+        
+        {% if score == total %}
+        <div class="alert alert-success">
+            <h5>Perfect! You got all questions right!</h5>
+        </div>
+        {% elif score >= total * 0.7 %}
+        <div class="alert alert-info">
+            <h5>Well done! You passed with a good score.</h5>
+        </div>
+        {% else %}
+        <div class="alert alert-warning">
+            <h5>Keep practicing! You can do better.</h5>
+        </div>
+        {% endif %}
+        
+        {% if certificate_path %}
+        <div class="mt-4">
+            <h5>Download your certificate of completion</h5>
+            <a href="{{ url_for('download_certificate', filename=certificate_path) }}" 
+               class="btn btn-primary mt-2">
+                Download Certificate
+            </a>
+        </div>
+        {% endif %}
+        
+        <div class="mt-4">
+            <a href="{{ url_for('module', module_name=module_name) }}" class="btn btn-secondary">
+                Back to Module
+            </a>
+            <a href="{{ url_for('home') }}" class="btn btn-primary">
+                Return to Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

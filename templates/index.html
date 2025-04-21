@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="jumbotron text-center mt-5">
+    <h1 class="display-4">Welcome to English Learning Platform</h1>
+    <p class="lead">Improve your English grammar, writing, and pronunciation skills</p>
+    <hr class="my-4">
+    <p>Start your learning journey today with our interactive modules and quizzes.</p>
+    <a class="btn btn-primary btn-lg" href="/register" role="button">Get Started</a>
+</div>
+
+<div class="row mt-5">
+    <div class="lesson-grid">
+        <div class="lesson-card">
+            <div class="lesson-icon">📚</div>
+            <div class="lesson-title">Grammar Fundamentals</div>
+            <div class="lesson-description">Master the basics of English grammar, from parts of speech to sentence structure.</div>
+            <a href="{{ url_for('module', module_name='grammar') }}" class="lesson-link">Start Learning</a>
+        </div>
+        <div class="lesson-card">
+            <div class="lesson-icon">🗣️</div>
+            <div class="lesson-title">Pronunciation Workshop</div>
+            <div class="lesson-description">Improve your accent and clarity with our interactive pronunciation exercises.</div>
+            <a href="{{ url_for('module', module_name='pronunciation') }}" class="lesson-link">Start Learning</a>
+        </div>
+        <div class="lesson-card">
+            <div class="lesson-icon">✍️</div>
+            <div class="lesson-title">Essay Writing Skills</div>
+            <div class="lesson-description">Learn to craft compelling essays with strong arguments and clear structure.</div>
+            <a href="{{ url_for('module', module_name='writing') }}" class="lesson-link">Start Learning</a>
+        </div>
+        <div class="lesson-card">
+            <div class="lesson-icon">🎭</div>
+            <div class="lesson-title">Conversational English</div>
+            <div class="lesson-description">Practice everyday conversations and idioms to sound more natural in English.</div>
+            <a href="{{ url_for('module', module_name='conversation') }}" class="lesson-link">Start Learning</a>
+        </div>
+        <div class="lesson-card">
+            <div class="lesson-icon">📰</div>
+            <div class="lesson-title">Reading Comprehension</div>
+            <div class="lesson-description">Enhance your understanding of complex texts with advanced reading strategies.</div>
+            <a href="{{ url_for('module', module_name='reading') }}" class="lesson-link">Start Learning</a>
+        </div>
+        <div class="lesson-card">
+            <div class="lesson-icon">🏢</div>
+            <div class="lesson-title">Business English</div>
+            <div class="lesson-description">Learn professional vocabulary and communication skills for the workplace.</div>
+            <a href="{{ url_for('module', module_name='business') }}" class="lesson-link">Start Learning</a>
+        </div>
+        <div class="lesson-card">
+            <div class="lesson-icon">🎵</div>
+            <div class="lesson-title">English Through Music</div>
+            <div class="lesson-description">Improve your language skills by analyzing popular English songs and lyrics.</div>
+            <a href="{{ url_for('module', module_name='music') }}" class="lesson-link">Start Learning</a>
+        </div>
+        <div class="lesson-card">
+            <div class="lesson-icon">🌍</div>
+            <div class="lesson-title">Cultural Studies</div>
+            <div class="lesson-description">Explore English-speaking cultures and improve your cultural competence.</div>
+            <a href="{{ url_for('module', module_name='culture') }}" class="lesson-link">Start Learning</a>
+        </div>
+    </div>
+{% endblock %}

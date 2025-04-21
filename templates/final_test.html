@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Final Assessment{% endblock %}
+
+{% block content %}
+<div class="container">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('home') }}">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Final Assessment</li>
+        </ol>
+    </nav>
+
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h3>Comprehensive English Assessment</h3>
+            <p class="mb-0">This test evaluates your knowledge across all modules</p>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-info">
+                <p><strong>Instructions:</strong></p>
+                <ul>
+                    <li>This assessment contains {{ test.questions|length }} questions from various modules</li>
+                    <li>You need to score at least 70% to pass</li>
+                    <li>You can take this test multiple times</li>
+                    <li>A certificate will be generated upon successful completion</li>
+                </ul>
+            </div>
+
+            <form method="POST" action="{{ url_for('final_test') }}">
+                <input type="hidden" name="test_id" value="{{ test.test_id }}">
+                
+                {% for question in test.questions %}
+                <div class="question-card mb-4">
+                    <h5 class="mb-3">Question {{ question.question_number }}: {{ question.question }}</h5>
+                    
+                    {% for option in question.options %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" 
+                               name="question_{{ question.id }}" id="q{{ question.id }}_option{{ loop.index }}" 
+                               value="{{ option }}" required>
+                        <label class="form-check-label" for="q{{ question.id }}_option{{ loop.index }}">
+                            {{ option }}
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                {% if not loop.last %}
+                <hr>
+                {% endif %}
+                {% endfor %}
+                
+                <div class="d-grid mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">Submit Assessment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

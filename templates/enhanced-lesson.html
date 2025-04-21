@@ -1,0 +1,317 @@
+{% extends "base.html" %}
+
+{% block title %}{{ module_title }} - {{ lesson.title }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/lesson.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/enhanced-lesson.css') }}">
+{% endblock %}
+
+{% block content %}
+<!-- Lesson Header -->
+<div class="lesson-header mb-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('home') }}"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('module', module_name=module_name) }}">{{ module_title }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ lesson.title }}</li>
+        </ol>
+    </nav>
+    
+    <div class="lesson-title-container">
+        <h2 class="lesson-title">{{ lesson.title }}</h2>
+        <div class="lesson-metadata">
+            <span class="badge bg-primary"><i class="far fa-clock"></i> {{ lesson.duration|default('15 min') }}</span>
+            <span class="badge bg-secondary"><i class="fas fa-level-up-alt"></i> {{ lesson.level|default('Beginner') }}</span>
+        </div>
+    </div>
+</div>
+
+<!-- Main Lesson Container -->
+<div class="lesson-container">
+    <!-- Sidebar with Navigation and Progress -->
+    <div class="lesson-sidebar">
+        <div class="sidebar-section">
+            <h5><i class="fas fa-map-signs"></i> Lesson Map</h5>
+            <div class="lesson-progress">
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: {{ lesson.progress|default(0) }}%;" 
+                         aria-valuenow="{{ lesson.progress|default(0) }}" aria-valuemin="0" aria-valuemax="100">
+                         {{ lesson.progress|default(0) }}%
+                    </div>
+                </div>
+            </div>
+            <ul class="lesson-sections nav flex-column">
+                {% for section in lesson.sections|default([]) %}
+                <li class="nav-item">
+                    <a class="nav-link {% if section.completed %}completed{% elif section.active %}active{% endif %}" 
+                       href="#section-{{ loop.index }}">
+                        {% if section.completed %}<i class="fas fa-check-circle"></i>
+                        {% elif section.active %}<i class="fas fa-circle"></i>
+                        {% else %}<i class="far fa-circle"></i>{% endif %}
+                        {{ section.title }}
+                    </a>
+                </li>
+                {% else %}
+                <li class="nav-item"><a class="nav-link active" href="#introduction"><i class="fas fa-circle"></i> Introduction</a></li>
+                <li class="nav-item"><a class="nav-link" href="#main-content"><i class="far fa-circle"></i> Main Content</a></li>
+                <li class="nav-item"><a class="nav-link" href="#practice"><i class="far fa-circle"></i> Practice Exercise</a></li>
+                <li class="nav-item"><a class="nav-link" href="#summary"><i class="far fa-circle"></i> Summary</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        
+        <div class="sidebar-section">
+            <h5><i class="fas fa-tools"></i> Tools</h5>
+            <div class="tools-buttons">
+                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="Take notes">
+                    <i class="fas fa-sticky-note"></i> Notes
+                </button>
+                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="Mark as favorite">
+                    <i class="far fa-bookmark"></i> Bookmark
+                </button>
+                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="Download resources">
+                    <i class="fas fa-download"></i> Resources
+                </button>
+            </div>
+        </div>
+        
+        <div class="sidebar-section">
+            <h5><i class="fas fa-graduation-cap"></i> Next Steps</h5>
+            <a href="{{ url_for('module', module_name=module_name) }}" class="btn btn-outline-secondary btn-sm mb-2 w-100">
+                <i class="fas fa-th-list"></i> Back to Module
+            </a>
+            {% if 'quizzes' in modules[module_name] %}
+            <a href="{{ url_for('take_quiz', module_name=module_name, quiz_id=1) }}" class="btn btn-primary btn-sm w-100">
+                <i class="fas fa-tasks"></i> Take Quiz
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Main Lesson Content -->
+    <div class="lesson-content">
+        <div class="content-card">
+            <!-- Video Section -->
+            {% if lesson.video %}
+            <div class="video-section" id="introduction">
+                <h4 class="section-title"><i class="fas fa-play-circle"></i> Lesson Video</h4>
+                <div class="video-container mb-4">
+                    <video controls width="100%" poster="{{ lesson.video.poster or '' }}">
+                        <source src="{{ url_for('serve_lesson_video', module_name=module_name, lesson_id=lesson.id) }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                
+                <div class="video-controls">
+                    <button class="btn btn-sm btn-outline-primary" title="Slower playback">
+                        <i class="fas fa-tachometer-alt"></i> 0.75x
+                    </button>
+                    <button class="btn btn-sm btn-outline-primary" title="Normal playback">
+                        <i class="fas fa-tachometer-alt"></i> 1.0x
+                    </button>
+                    <button class="btn btn-sm btn-outline-primary" title="Faster playback">
+                        <i class="fas fa-tachometer-alt"></i> 1.25x
+                    </button>
+                    <button class="btn btn-sm btn-outline-primary" title="Toggle subtitles">
+                        <i class="fas fa-closed-captioning"></i> Subtitles
+                    </button>
+                </div>
+            </div>
+            {% endif %}
+            
+            <!-- Main Content Section -->
+            <div class="content-section" id="main-content">
+                <h4 class="section-title"><i class="fas fa-book-open"></i> Lesson Content</h4>
+                <div class="lesson-text">
+                    {{ lesson.content|safe }}
+                </div>
+                
+                <!-- Key Points -->
+                <div class="key-points mt-4">
+                    <h5><i class="fas fa-star"></i> Key Points</h5>
+                    <ul class="key-points-list">
+                        {% for point in lesson.key_points|default(['First key point of this lesson', 'Second key point to remember', 'Third important concept']) %}
+                        <li>{{ point }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                
+                <!-- Visual Aids -->
+                <div class="visual-aids mt-4">
+                    <h5><i class="fas fa-image"></i> Visual Explanation</h5>
+                    <div class="aid-container">
+                        <img src="{{ lesson.diagram_url|default('/static/images/placeholder-diagram.png') }}" alt="Concept diagram" class="img-fluid rounded">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Practice Section -->
+            <div class="practice-section" id="practice">
+                <h4 class="section-title"><i class="fas fa-pencil-alt"></i> Practice Exercise</h4>
+                <div class="practice-container p-4 bg-light rounded">
+                    {% if module_name == 'grammar' %}
+                    <div class="grammar-exercise">
+                        <p class="lead">Fill in the blanks with the correct form of the verb:</p>
+                        <div class="exercise-item mb-3">
+                            <p>1. She <input type="text" class="form-control d-inline-block exercise-input" placeholder="go"> to school every day.</p>
+                            <div class="feedback-container" style="display: none;">
+                                <span class="feedback text-success"><i class="fas fa-check-circle"></i> Correct: "goes"</span>
+                            </div>
+                        </div>
+                        <div class="exercise-item mb-3">
+                            <p>2. They <input type="text" class="form-control d-inline-block exercise-input" placeholder="watch"> a movie right now.</p>
+                            <div class="feedback-container" style="display: none;">
+                                <span class="feedback text-success"><i class="fas fa-check-circle"></i> Correct: "are watching"</span>
+                            </div>
+                        </div>
+                        <div class="exercise-item mb-3">
+                            <p>3. He <input type="text" class="form-control d-inline-block exercise-input" placeholder="study"> for three hours yesterday.</p>
+                            <div class="feedback-container" style="display: none;">
+                                <span class="feedback text-success"><i class="fas fa-check-circle"></i> Correct: "studied"</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary check-answers">Check Answers</button>
+                        <button class="btn btn-outline-secondary show-answers">Show Answers</button>
+                    </div>
+                    {% elif module_name == 'writing' %}
+                    <div class="writing-exercise">
+                        <p class="lead">Write a 100-word paragraph about your daily routine.</p>
+                        <div class="counter-container text-muted mb-2">Word count: <span id="word-counter">0</span>/100</div>
+                        <textarea class="form-control mb-3" rows="5" id="writing-response" placeholder="Type your response here..."></textarea>
+                        <div class="d-flex">
+                            <button class="btn btn-primary me-2" id="submit-writing">Submit</button>
+                            <button class="btn btn-outline-secondary me-2" id="save-draft">Save Draft</button>
+                            <button class="btn btn-outline-secondary" id="get-feedback">Get AI Feedback</button>
+                        </div>
+                    </div>
+                    {% elif module_name == 'pronunciation' %}
+                    <div class="pronunciation-exercise">
+                        <p class="lead">Listen and repeat these minimal pairs:</p>
+                        
+                        <div class="word-pair mb-4">
+                            <div class="d-flex justify-content-between mb-2">
+                                <div class="word-card">
+                                    <p class="word-text"><strong>Ship</strong> /ʃɪp/</p>
+                                    <button class="btn btn-sm btn-primary play-audio" data-audio="ship">
+                                        <i class="fas fa-volume-up"></i> Listen
+                                    </button>
+                                </div>
+                                <div class="word-card">
+                                    <p class="word-text"><strong>Sheep</strong> /ʃiːp/</p>
+                                    <button class="btn btn-sm btn-primary play-audio" data-audio="sheep">
+                                        <i class="fas fa-volume-up"></i> Listen
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="record-container text-center">
+                                <button class="btn btn-outline-primary record-button" data-pair="ship-sheep">
+                                    <i class="fas fa-microphone"></i> Record Your Voice
+                                </button>
+                                <div class="recording-status mt-2" style="display: none;">
+                                    <div class="spinner-border text-primary spinner-border-sm" role="status">
+                                        <span class="visually-hidden">Recording...</span>
+                                    </div>
+                                    <span class="ms-2">Recording... <span class="timer">0</span>s</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="word-pair mb-4">
+                            <div class="d-flex justify-content-between mb-2">
+                                <div class="word-card">
+                                    <p class="word-text"><strong>Bit</strong> /bɪt/</p>
+                                    <button class="btn btn-sm btn-primary play-audio" data-audio="bit">
+                                        <i class="fas fa-volume-up"></i> Listen
+                                    </button>
+                                </div>
+                                <div class="word-card">
+                                    <p class="word-text"><strong>Beat</strong> /biːt/</p>
+                                    <button class="btn btn-sm btn-primary play-audio" data-audio="beat">
+                                        <i class="fas fa-volume-up"></i> Listen
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="record-container text-center">
+                                <button class="btn btn-outline-primary record-button" data-pair="bit-beat">
+                                    <i class="fas fa-microphone"></i> Record Your Voice
+                                </button>
+                                <div class="recording-status mt-2" style="display: none;">
+                                    <div class="spinner-border text-primary spinner-border-sm" role="status">
+                                        <span class="visually-hidden">Recording...</span>
+                                    </div>
+                                    <span class="ms-2">Recording... <span class="timer">0</span>s</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="generic-exercise">
+                        <p class="lead">Practice what you've learned:</p>
+                        <div class="mb-3">
+                            <label for="practice-response" class="form-label">Your answer:</label>
+                            <textarea class="form-control" id="practice-response" rows="4"></textarea>
+                        </div>
+                        <button class="btn btn-primary">Submit</button>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Summary Section -->
+            <div class="summary-section" id="summary">
+                <h4 class="section-title"><i class="fas fa-check-double"></i> Summary</h4>
+                <div class="summary-content">
+                    <p>{{ lesson.summary|default('In this lesson, we covered the key concepts related to ' + lesson.title + '. We learned about the main principles and practiced applying them through exercises.') }}</p>
+                </div>
+                
+                <div class="further-resources mt-4">
+                    <h5><i class="fas fa-external-link-alt"></i> Further Resources</h5>
+                    <ul class="resources-list">
+                        {% for resource in lesson.resources|default([
+                            {'title': 'Additional Practice Worksheet', 'url': '#', 'type': 'pdf'},
+                            {'title': 'Grammar Reference Guide', 'url': '#', 'type': 'link'},
+                            {'title': 'Vocabulary List', 'url': '#', 'type': 'doc'}
+                        ]) %}
+                        <li>
+                            <a href="{{ resource.url }}" class="resource-link">
+                                {% if resource.type == 'pdf' %}
+                                <i class="far fa-file-pdf"></i>
+                                {% elif resource.type == 'doc' %}
+                                <i class="far fa-file-word"></i>
+                                {% else %}
+                                <i class="fas fa-link"></i>
+                                {% endif %}
+                                {{ resource.title }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Navigation Footer -->
+            <div class="lesson-navigation-footer">
+                <div class="d-flex justify-content-between">
+                    <a href="#" class="btn btn-outline-primary prev-lesson" {% if not prev_lesson %}style="visibility: hidden;"{% endif %}>
+                        <i class="fas fa-arrow-left"></i> Previous Lesson
+                    </a>
+                    
+                    <a href="#" class="btn btn-outline-primary mark-complete">
+                        <i class="fas fa-check"></i> Mark as Complete
+                    </a>
+                    
+                    <a href="#" class="btn btn-outline-primary next-lesson" {% if not next_lesson %}style="visibility: hidden;"{% endif %}>
+                        Next Lesson <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/enhanced-lesson.js') }}"></script>
+{% endblock %}

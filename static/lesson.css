@@ -1,0 +1,219 @@
+/* Enhanced lesson styles */
+.lesson-container {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.lesson-sidebar {
+    flex: 0 0 280px;
+    position: sticky;
+    top: 20px;
+    align-self: flex-start;
+}
+
+.lesson-content {
+    flex: 1;
+}
+
+.content-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+/* Header styles */
+.lesson-header {
+    position: relative;
+}
+
+.lesson-title-container {
+    background: var(--primary-color);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    margin-top: 10px;
+}
+
+.lesson-title {
+    margin: 0;
+    font-weight: 700;
+}
+
+.lesson-metadata {
+    margin-top: 10px;
+}
+
+.lesson-metadata .badge {
+    font-size: 0.8rem;
+    padding: 6px 10px;
+    margin-right: 10px;
+}
+
+/* Sidebar styles */
+.sidebar-section {
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.sidebar-section h5 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-section h5 i {
+    margin-right: 8px;
+}
+
+.lesson-progress {
+    margin-bottom: 15px;
+}
+
+.lesson-sections .nav-link {
+    display: flex;
+    align-items: center;
+    padding: 6px 10px;
+    color: var(--text-color);
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
+
+.lesson-sections .nav-link i {
+    margin-right: 8px;
+    width: 16px;
+    text-align: center;
+}
+
+.lesson-sections .nav-link.active {
+    background-color: rgba(52, 152, 219, 0.1);
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.lesson-sections .nav-link.completed {
+    color: var(--secondary-color);
+}
+
+.tools-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tools-buttons .btn {
+    flex: 1;
+    min-width: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tools-buttons .btn i {
+    margin-right: 5px;
+}
+
+/* Content section styles */
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.section-title i {
+    margin-right: 10px;
+}
+
+.content-section, .video-section, .practice-section, .summary-section {
+    padding: 25px;
+    border-bottom: 1px solid #eee;
+}
+
+.key-points-list li {
+    margin-bottom: 8px;
+}
+
+.video-controls {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    justify-content: center;
+}
+
+/* Practice exercise styles */
+.exercise-input {
+    width: 150px;
+    display: inline-block;
+    margin: 0 5px;
+}
+
+.word-pair {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+}
+
+.word-card {
+    background: white;
+    border-radius: 8px;
+    padding: 15px 20px;
+    width: 45%;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.word-text {
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.record-container {
+    margin-top: 15px;
+}
+
+/* Navigation footer */
+.lesson-navigation-footer {
+    padding: 20px 25px;
+}
+
+/* For mobile responsiveness */
+@media (max-width: 992px) {
+    .lesson-container {
+        flex-direction: column;
+    }
+    
+    .lesson-sidebar {
+        flex: 0 0 100%;
+        position: static;
+        margin-bottom: 20px;
+        order: 2;
+    }
+    
+    .lesson-content {
+        order: 1;
+    }
+}
+
+/* Visual enhancement for focus states */
+input:focus, textarea:focus, .btn:focus {
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+/* Animation for the mark complete button */
+.mark-complete:hover {
+    transform: translateY(-2px);
+    transition: transform 0.2s ease;
+}

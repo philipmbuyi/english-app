@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block title %}User Profile{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='profile_style.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container profile-container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Profile Information</h3>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <div class="profile-avatar">
+                            <i class="fas fa-user-circle fa-5x"></i>
+                        </div>
+                        <h4 class="mt-2">{{ user.username }}</h4>
+                        <p class="text-muted">Member since {{ user.registration_date|default('N/A', true) }}</p>
+                    </div>
+                    
+                    <form id="profile-form">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" value="{{ user.email|default('', true) }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone</label>
+                            <input type="tel" class="form-control" id="phone" name="phone" value="{{ user.phone|default('', true) }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="language_level" class="form-label">Language Level</label>
+                            <select class="form-select" id="language_level" name="language_level">
+                                <option value="beginner" {% if user.language_level == 'beginner' %}selected{% endif %}>Beginner</option>
+                                <option value="intermediate" {% if user.language_level == 'intermediate' %}selected{% endif %}>Intermediate</option>
+                                <option value="advanced" {% if user.language_level == 'advanced' %}selected{% endif %}>Advanced</option>
+                            </select>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Update Profile</button>
+                        </div>
+                    </form>
+                    
+                    <div class="mt-3">
+                        <button class="btn btn-outline-secondary w-100" id="change-password-btn">Change Password</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Learning Progress</h3>
+                </div>
+                <div class="card-body">
+                    <canvas id="moduleProgressChart" width="400" height="200"></canvas>
+                    
+                    <div class="mt-4">
+                        <h5>Completed Modules</h5>
+                        <div class="progress mb-3">
+                            <div class="progress-bar" role="progressbar" 
+                                style="width: {{ ((user.completed_modules|default([])|length / modules|default([])|length) * 100) }}%" 
+                                aria-valuenow="{{ ((user.completed_modules|default([])|length / modules|default([])|length) * 100) }}" 
+                                aria-valuemin="0" 
+                                aria-valuemax="100">
+                                {{ ((user.completed_modules|default([])|length / modules|default([])|length) * 100)|round(1) }}%
+                            </div>
+                        </div>
+                        <p>You've completed {{ user.completed_modules|default([])|length }} out of {{ modules|default([])|length }} modules.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3>Recent Test Results</h3>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Test Name</th>
+                                <th>Date</th>
+                                <th>Score</th>
+                            </tr>
+                        </thead>
+                        <tbody id="test-results-body">
+                            <!-- Test results will be loaded here dynamically -->
+                            {% if test_results|default([])|length > 0 %}
+                                {% for test in test_results %}
+                                <tr>
+                                    <td>{{ test.name }}</td>
+                                    <td>{{ test.date }}</td>
+                                    <td>{{ test.score }}</td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="3" class="text-center">No test results yet</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Change Password Modal -->
+<div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="passwordModalLabel">Change Password</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="password-form">
+                    <div class="mb-3">
+                        <label for="current-password" class="form-label">Current Password</label>
+                        <input type="password" class="form-control" id="current-password" name="current_password" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="new-password" class="form-label">New Password</label>
+                        <input type="password" class="form-control" id="new-password" name="new_password" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirm-password" class="form-label">Confirm New Password</label>
+                        <input type="password" class="form-control" id="confirm-password" name="confirm_password" required>
+                    </div>
+                    <div id="password-error" class="alert alert-danger" style="display: none;"></div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="save-password">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='profile_script.js') }}"></script>
+{% endblock %}

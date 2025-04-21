@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Your Learning Dashboard</h2>
+
+{% if is_guest %}
+<div class="alert alert-info">
+    <h5>You're using a guest account</h5>
+    <p>Your progress will be saved temporarily. <a href="{{ url_for('upgrade_account') }}">Register</a> to save your progress permanently.</p>
+</div>
+{% endif %}
+
+
+<div class="lesson-grid">
+    {% for module_name, module_data in modules.items() %}
+    <div class="lesson-card">
+        <div class="lesson-icon">
+            {% if module_name == 'grammar' %}📚{% endif %}
+            {% if module_name == 'writing' %}✍️{% endif %}
+            {% if module_name == 'pronunciation' %}🗣️{% endif %}
+            {% if module_name == 'conversation' %}🎭{% endif %}
+            {% if module_name == 'reading' %}📰{% endif %}
+            {% if module_name == 'business' %}🏢{% endif %}
+            {% if module_name == 'music' %}🎵{% endif %}
+            {% if module_name == 'culture' %}🌍{% endif %}
+        </div>
+        <div class="lesson-title">{{ module_data.title }}</div>
+        <div class="lesson-description">Explore lessons and quizzes to improve your {{ module_name }} skills.</div>
+        <a href="{{ url_for('module', module_name=module_name) }}" class="lesson-link">Start Learning</a>
+        
+        {% if module_name in user.completed_modules|default([]) %}
+        <div class="mt-2">
+            <span class="badge bg-success">Completed</span>
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+
+<div class="card mt-4">
+    <div class="card-header">
+        <h5>Your Progress</h5>
+    </div>
+    <div class="card-body">
+        <div class="progress mb-3">
+            <div class="progress-bar" role="progressbar" 
+                 style="width: {{ ((user.completed_modules|default([])|length / modules|length) * 100) }}%" 
+                 aria-valuenow="{{ ((user.completed_modules|default([])|length / modules|length) * 100) }}" 
+                 aria-valuemin="0" 
+                 aria-valuemax="100">
+                {{ ((user.completed_modules|default([])|length / modules|length) * 100)|round(1) }}%
+            </div>
+        </div>
+        <p>You've completed {{ user.completed_modules|default([])|length }} out of {{ modules|length }} modules.</p>
+    </div>
+</div>
+{% endblock %}

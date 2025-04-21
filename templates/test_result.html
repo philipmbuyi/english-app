@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}Assessment Results{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card">
+        <div class="card-header {% if results.passed %}bg-success{% else %}bg-warning{% endif %} text-white">
+            <h3>Final Assessment Results</h3>
+        </div>
+        <div class="card-body text-center">
+            <h4 class="mb-4">You scored {{ results.score }} out of {{ results.total }} ({{ results.percentage|round(1) }}%)</h4>
+            
+            {% if results.passed %}
+            <div class="alert alert-success">
+                <h5><i class="fas fa-award"></i> Congratulations! You've passed the assessment!</h5>
+                <p>You've demonstrated a strong understanding of the English language principles covered in this course.</p>
+            </div>
+
+            {% if results.test_id %}
+            <div class="certificate-container my-4 py-3 px-4 border border-success rounded bg-light">
+                <h5 class="text-success">Your Certificate of Completion</h5>
+                <p>A certificate has been generated to recognize your achievement.</p>
+                <a href="{{ url_for('download_certificate', filename='final_' + results.test_id + '.pdf') }}" 
+                class="btn btn-success">
+                    <i class="fas fa-download"></i> Download Certificate
+                </a>
+            </div>
+            {% endif %}
+            {% else %}
+            <div class="alert alert-warning">
+                <h5>Keep practicing! You need to score at least 70% to pass.</h5>
+                <p>Review the areas where you need improvement and try again.</p>
+            </div>
+            {% endif %}
+            
+            <h4 class="mt-5 mb-3">Performance by Module</h4>
+            <div class="row">
+                {% for module, stats in results.module_scores.items() %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <h5 class="mb-0">{{ module|capitalize }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <h6>Score: {{ stats.correct }}/{{ stats.total }}</h6>
+                            <div class="progress">
+                                <div class="progress-bar {% if stats.percentage >= 70 %}bg-success{% else %}bg-warning{% endif %}" 
+                                     role="progressbar" 
+                                     style="width: {{ stats.percentage }}%" 
+                                     aria-valuenow="{{ stats.percentage }}" 
+                                     aria-valuemin="0" 
+                                     aria-valuemax="100">
+                                    {{ stats.percentage|round(1) }}%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <h4 class="mt-5 mb-3">Question Feedback</h4>
+            <div class="accordion" id="feedbackAccordion">
+                {% for q_id, feedback in results.feedback.items() %}
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading{{ q_id }}">
+                        <button class="accordion-button {% if not feedback.correct %}text-danger{% else %}text-success collapsed{% endif %}" 
+                                type="button" 
+                                data-bs-toggle="collapse" 
+                                data-bs-target="#collapse{{ q_id }}" 
+                                aria-expanded="{{ 'true' if not feedback.correct else 'false' }}" 
+                                aria-controls="collapse{{ q_id }}">
+                            {% if feedback.correct %}
+                            <i class="fas fa-check-circle me-2"></i>
+                            {% else %}
+                            <i class="fas fa-times-circle me-2"></i>
+                            {% endif %}
+                            Question {{ loop.index }} ({{ feedback.module|capitalize }})
+                        </button>
+                    </h2>
+                    <div id="collapse{{ q_id }}" 
+                         class="accordion-collapse collapse {% if not feedback.correct %}show{% endif %}" 
+                         aria-labelledby="heading{{ q_id }}" 
+                         data-bs-parent="#feedbackAccordion">
+                        <div class="accordion-body">
+                            <div class="row">
+                                <div class="col-md-6 text-start">
+                                    <h6>Your Answer:</h6>
+                                    <p class="{% if feedback.correct %}text-success{% else %}text-danger{% endif %}">
+                                        {{ feedback.your_answer or 'No answer provided' }}
+                                    </p>
+                                </div>
+                                {% if not feedback.correct %}
+                                <div class="col-md-6 text-start">
+                                    <h6>Correct Answer:</h6>
+                                    <p class="text-success">{{ feedback.correct_answer }}</p>
+                                </div>
+                                {% endif %}
+                            </div>
+                            {% if feedback.explanation %}
+                            <div class="explanation mt-3 p-3 bg-light rounded">
+                                <h6>Explanation:</h6>
+                                <p>{{ feedback.explanation }}</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <div class="mt-5">
+                <a href="{{ url_for('dashboard') }}" class="btn btn-secondary me-2">
+                    Return to Dashboard
+                </a>
+                <a href="{{ url_for('final_test') }}" class="btn btn-primary">
+                    Take Test Again
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

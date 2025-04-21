@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block title %}Resources{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='resources.css') }}">
+
+
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h3>Learning Resources</h3>
+    </div>
+    <div class="card-body">
+        <div class="search-bar">
+            <input type="text" id="search-input" placeholder="Search for resources...">
+            <button onclick="searchResources()">Search</button>
+        </div>
+        
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="reading">Reading</button>
+            <button class="filter-btn" data-filter="listening">Listening</button>
+            <button class="filter-btn" data-filter="writing">Writing</button>
+            <button class="filter-btn" data-filter="speaking">Speaking</button>
+            <button class="filter-btn" data-filter="grammar">Grammar</button>
+            <button class="filter-btn" data-filter="medical">Medical</button>
+        </div>
+        
+        <div class="resource-grid">
+            <div class="resource-card" data-category="reading listening">
+                <div class="resource-icon">📰</div>
+                <div class="resource-title">News in Levels</div>
+                <div class="resource-description">Read and listen to current news articles adapted for different English proficiency levels.</div>
+                <a href="{{ url_for('resource_detail', resource_id='news-in-levels') }}" class="resource-link">Explore</a>
+            </div>
+            
+            <div class="resource-card" data-category="writing">
+                <div class="resource-icon">✍️</div>
+                <div class="resource-title">Essay Writing Guide</div>
+                <div class="resource-description">A comprehensive guide to writing essays, including structure, argumentation, and style tips.</div>
+                <a href="{{ url_for('resource_detail', resource_id='essay-writing-guide') }}" class="resource-link">Read More</a>
+            </div>
+            
+            <div class="resource-card" data-category="speaking listening">
+                <div class="resource-icon">🎙️</div>
+                <div class="resource-title">Pronunciation Tool</div>
+                <div class="resource-description">Interactive tool to practice and perfect your English pronunciation with immediate feedback.</div>
+                <a href="{{ url_for('resource_detail', resource_id='pronunciation-tool') }}" class="resource-link">Try Now</a>
+            </div>
+            
+            <div class="resource-card" data-category="grammar">
+                <div class="resource-icon">📚</div>
+                <div class="resource-title">Grammar Reference</div>
+                <div class="resource-description">Comprehensive reference for English grammar rules, with examples and exercises.</div>
+                <a href="{{ url_for('resource_detail', resource_id='grammar-reference') }}" class="resource-link">Study</a>
+            </div>
+            
+            <div class="resource-card" data-category="listening speaking">
+                <div class="resource-icon">🎬</div>
+                <div class="resource-title">Movie Dialogue Database</div>
+                <div class="resource-description">Collection of movie clips with subtitles to improve listening and speaking skills.</div>
+                <a href="{{ url_for('resource_detail', resource_id='movie-dialogues') }}" class="resource-link">Watch</a>
+            </div>
+            
+            <div class="resource-card" data-category="reading writing">
+                <div class="resource-icon">📖</div>
+                <div class="resource-title">Book Club</div>
+                <div class="resource-description">Join our online book club to discuss English literature and improve reading comprehension.</div>
+                <a href="{{ url_for('resource_detail', resource_id='book-club') }}" class="resource-link">Join Now</a>
+            </div>
+            
+            <div class="resource-card" data-category="grammar writing">
+                <div class="resource-icon">🖋️</div>
+                <div class="resource-title">Writing Assistant</div>
+                <div class="resource-description">AI-powered tool to check your writing for grammar, style, and clarity improvements.</div>
+                <a href="{{ url_for('resource_detail', resource_id='writing-assistant') }}" class="resource-link">Start Writing</a>
+            </div>
+            
+            <div class="resource-card" data-category="speaking listening">
+                <div class="resource-icon">🗣️</div>
+                <div class="resource-title">Conversation Exchange</div>
+                <div class="resource-description">Connect with native speakers for language exchange and conversation practice.</div>
+                <a href="{{ url_for('resource_detail', resource_id='conversation-exchange') }}" class="resource-link">Find Partners</a>
+            </div>
+            <div class="resource-card" data-category="speaking listening medical">
+                <div class="resource-icon">🏥</div>
+                <div class="resource-title">Medical English</div>
+                <div class="resource-description">Learn specialized vocabulary and communication skills for healthcare professionals and patients.</div>
+                <a href="{{ url_for('resource_detail', resource_id='medical-english') }}" class="resource-link">Learn More</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function searchResources() {
+    const searchTerm = document.getElementById('search-input').value.toLowerCase();
+    const resourceCards = document.querySelectorAll('.resource-card');
+    
+    resourceCards.forEach(card => {
+        const title = card.querySelector('.resource-title').textContent.toLowerCase();
+        const description = card.querySelector('.resource-description').textContent.toLowerCase();
+        
+        if (title.includes(searchTerm) || description.includes(searchTerm)) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+
+document.getElementById('search-input').addEventListener('keyup', function(event) {
+    if (event.key === 'Enter') {
+        searchResources();
+    }
+});
+
+const filterButtons = document.querySelectorAll('.filter-btn');
+filterButtons.forEach(button => {
+    button.addEventListener('click', function() {
+        const filter = this.getAttribute('data-filter');
+        filterResources(filter);
+        
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+    });
+});
+
+function filterResources(filter) {
+    const resourceCards = document.querySelectorAll('.resource-card');
+    
+    resourceCards.forEach(card => {
+        if (filter === 'all' || card.getAttribute('data-category').includes(filter)) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+</script>
+{% endblock %}

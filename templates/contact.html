@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Contact Us{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/contact.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3>Contact Us</h3>
+            </div>
+            <div class="card-body">
+                <p class="mb-4">Have questions or feedback? Fill out the form below and we'll get back to you as soon as possible.</p>
+                
+                {% if success %}
+                <div class="alert alert-success">
+                    Your message has been sent successfully. We'll respond to you shortly.
+                </div>
+                {% endif %}
+                
+                {% if error %}
+                <div class="alert alert-danger">{{ error }}</div>
+                {% endif %}
+                
+                <form method="POST" action="{{ url_for('contact') }}">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Your Name</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="subject" class="form-label">Subject</label>
+                        <select class="form-select" id="subject" name="subject" required>
+                            <option value="" selected disabled>Select a subject</option>
+                            <option value="general">General Inquiry</option>
+                            <option value="technical">Technical Support</option>
+                            <option value="feedback">Feedback</option>
+                            <option value="billing">Billing Questions</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Your Message</label>
+                        <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                    </div>
+                    
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="newsletter" name="newsletter">
+                        <label class="form-check-label" for="newsletter">Subscribe to our newsletter</label>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="card mt-4">
+            <div class="card-header">
+                <h4>Other Ways to Reach Us</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 mb-4 mb-md-0">
+                        <a href="mailto:support@cmcenglish.com" class="contact-block text-decoration-none">
+                            <div class="card h-100 p-3 text-center border-primary hover-shadow">
+                                <i class="fas fa-envelope fa-2x mb-3 text-primary"></i>
+                                <h6>Email</h6>
+                                <p class="mb-0">support@cmcenglish.com</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 mb-4 mb-md-0">
+                        <a href="tel:+27815455306" class="contact-block text-decoration-none">
+                            <div class="card h-100 p-3 text-center border-primary hover-shadow">
+                                <i class="fas fa-phone fa-2x mb-3 text-primary"></i>
+                                <h6>Phone</h6>
+                                <p class="mb-0">+2781 5455 306</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="https://maps.google.com/?q=57+gladitor+St+rhodefield+kempton+park+JHB" target="_blank" class="contact-block text-decoration-none">
+                            <div class="card h-100 p-3 text-center border-primary hover-shadow">
+                                <i class="fas fa-map-marker-alt fa-2x mb-3 text-primary"></i>
+                                <h6>Address</h6>
+                                <p class="mb-0">57 gladiator St rhodefield <br>kempton park JHB, PB 1619</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

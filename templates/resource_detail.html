@@ -1,0 +1,272 @@
+{% extends "base.html" %}
+
+{% block title %}{{ resource.title }}{% endblock %}
+
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='resources.css') }}">
+{% endblock %}
+
+
+{% block content %}
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('home') }}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('resources') }}">Resources</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ resource.title }}</li>
+    </ol>
+</nav>
+
+<div class="card">
+    <div class="card-header">
+        <h3>{{ resource.title }}</h3>
+    </div>
+    
+    <!-- This is where we implement the resource detail content -->
+    {% if resource.resource_id == 'news-in-levels' %}
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4 mb-4 mb-md-0 text-center">
+                <img src="{{ url_for('static', filename='images/news-in-levels.jpg') }}" 
+                     alt="News in Levels" class="img-fluid rounded">
+            </div>
+            <div class="col-md-8">
+                <p class="lead">Stay updated with current events while improving your English reading and listening skills at your own pace.</p>
+                <div class="mt-4">
+                    <h4>What is News in Levels?</h4>
+                    <p>News in Levels is a unique resource that presents current news articles adapted for different English proficiency levels. Each article is available in three levels:</p>
+                    <ul>
+                        <li><strong>Level 1:</strong> Simple vocabulary and sentence structure for beginners</li>
+                        <li><strong>Level 2:</strong> Intermediate vocabulary with more complex sentences</li>
+                        <li><strong>Level 3:</strong> Advanced content similar to authentic news sources</li>
+                    </ul>
+                    
+                    <h4>Features:</h4>
+                    <ul>
+                        <li>Audio recordings of all articles by native speakers</li>
+                        <li>Comprehension questions to test understanding</li>
+                        <li>New articles added daily covering global news</li>
+                        <li>Vocabulary lists with definitions for key terms</li>
+                        <li>Printable PDF versions for offline study</li>
+                    </ul>
+                    
+                    <h4>How to Use This Resource:</h4>
+                    <ol>
+                        <li>Start with the level that matches your current ability</li>
+                        <li>Read the article while listening to the audio</li>
+                        <li>Check your understanding with the comprehension questions</li>
+                        <li>Review the vocabulary list and try to use new words in sentences</li>
+                        <li>Move up to the next level when you feel comfortable</li>
+                    </ol>
+                    
+                    <h4>Benefits:</h4>
+                    <ul>
+                        <li>Develop reading and listening skills simultaneously</li>
+                        <li>Stay motivated by reading about current, relevant topics</li>
+                        <li>Track your progress as you move through the levels</li>
+                        <li>Build vocabulary in context of real-world situations</li>
+                    </ul>
+                    
+                    <div class="mt-4">
+                        <a href="#" class="btn btn-primary">Start Reading Now</a>
+                        <a href="#" class="btn btn-outline-secondary ms-2">Download Sample PDFs</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% elif resource.resource_id == 'essay-writing-guide' %}
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4 mb-4 mb-md-0 text-center">
+                <img src="{{ url_for('static', filename='images/essay-writing.jpg') }}" 
+                     alt="Essay Writing Guide" class="img-fluid rounded">
+            </div>
+            <div class="col-md-8">
+                <p class="lead">Master the art of essay writing with our comprehensive guide covering structure, argumentation, and style.</p>
+                <div class="mt-4">
+                    <h4>Introduction to Essay Writing</h4>
+                    <p>Writing effective essays is a crucial skill for academic success and professional communication. This guide breaks down the essay writing process into manageable steps and provides practical advice for each stage.</p>
+                    
+                    <h4>Essay Structure:</h4>
+                    <ol>
+                        <li>
+                            <strong>Introduction</strong>
+                            <ul>
+                                <li>Hook to grab reader's attention</li>
+                                <li>Background information for context</li>
+                                <li>Clear thesis statement that presents your argument</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <strong>Body Paragraphs</strong>
+                            <ul>
+                                <li>Topic sentence introducing the paragraph's main idea</li>
+                                <li>Supporting evidence (facts, statistics, examples, quotes)</li>
+                                <li>Analysis explaining how evidence supports your thesis</li>
+                                <li>Transitions between paragraphs for smooth flow</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <strong>Conclusion</strong>
+                            <ul>
+                                <li>Restatement of thesis in fresh words</li>
+                                <li>Summary of main points</li>
+                                <li>Final thought or call to action</li>
+                            </ul>
+                        </li>
+                    </ol>
+                    
+                    <h4>Types of Essays:</h4>
+                    <ul>
+                        <li><strong>Argumentative:</strong> Takes a position on an issue and defends it</li>
+                        <li><strong>Expository:</strong> Explains a topic with facts and examples</li>
+                        <li><strong>Narrative:</strong> Tells a story with a clear point</li>
+                        <li><strong>Descriptive:</strong> Creates a vivid picture using sensory details</li>
+                        <li><strong>Compare/Contrast:</strong> Examines similarities and differences</li>
+                    </ul>
+                    
+                    <h4>Writing Process:</h4>
+                    <ul>
+                        <li><strong>Prewriting:</strong> Brainstorming, research, and outlining</li>
+                        <li><strong>Drafting:</strong> Creating a first version focusing on content</li>
+                        <li><strong>Revising:</strong> Improving organization and development</li>
+                        <li><strong>Editing:</strong> Refining language for clarity and style</li>
+                        <li><strong>Proofreading:</strong> Checking for grammar, spelling, and punctuation errors</li>
+                    </ul>
+                    
+                    <div class="mt-4">
+                        <a href="#" class="btn btn-primary">Download Full Guide</a>
+                        <a href="#" class="btn btn-outline-secondary ms-2">View Example Essays</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% elif resource.resource_id == 'pronunciation-tool' %}
+    <!-- Add pronunciation tool content similarly -->
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4 mb-4 mb-md-0 text-center">
+                <img src="{{ url_for('static', filename='images/pronunciation-tool.jpg') }}" 
+                     alt="Pronunciation Tool" class="img-fluid rounded">
+            </div>
+            <div class="col-md-8">
+                <p class="lead">Perfect your English pronunciation with our interactive tool that provides instant feedback and personalized practice.</p>
+                <div class="mt-4">
+                    <h4>About the Pronunciation Tool</h4>
+                    <p>Our pronunciation tool uses advanced speech recognition technology to help you sound more like a native English speaker. Get real-time feedback on your pronunciation and track your improvement over time.</p>
+                    
+                    <h4>Key Features:</h4>
+                    <ul>
+                        <li><strong>Sound Comparison:</strong> Record yourself and compare to native speaker recordings</li>
+                        <li><strong>Visual Feedback:</strong> See waveform comparisons highlighting differences</li>
+                        <li><strong>Problem Detection:</strong> Automatic identification of specific sounds you struggle with</li>
+                        <li><strong>Personalized Drills:</strong> Custom exercises targeting your unique challenges</li>
+                        <li><strong>Progress Tracking:</strong> Monitor improvement across different sound categories</li>
+                    </ul>
+                    
+                    <h4>How to Use:</h4>
+                    <ol>
+                        <li><strong>Set Up:</strong> Create a quick profile to track your progress</li>
+                        <li><strong>Assessment:</strong> Complete an initial pronunciation assessment</li>
+                        <li><strong>Practice:</strong> Work through recommended exercises based on your results</li>
+                        <li><strong>Record:</strong> Record yourself reading words, phrases, or sentences</li>
+                        <li><strong>Get Feedback:</strong> Receive immediate visual and audio feedback</li>
+                        <li><strong>Compare:</strong> Listen to your recording alongside a native speaker</li>
+                        <li><strong>Refine:</strong> Focus on problem areas until mastered</li>
+                    </ol>
+                    
+                    <h4>Technical Requirements:</h4>
+                    <ul>
+                        <li>Microphone-enabled device</li>
+                        <li>Modern web browser (Chrome, Firefox, Safari, or Edge)</li>
+                        <li>Headphones recommended for best results</li>
+                    </ul>
+                    
+                    <div class="mt-4">
+                        <a href="#" class="btn btn-primary">Launch Pronunciation Tool</a>
+                        <a href="#" class="btn btn-outline-secondary ms-2">View Demo</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% elif resource.resource_id == 'grammar-reference' %}
+    <!-- Add grammar reference content similarly -->
+    <!-- Continue for other resource types -->
+    {% else %}
+    <div class="card-body">
+        <div class="row">
+            {% if resource.image %}
+            <div class="col-md-4 mb-4 mb-md-0 text-center">
+                <img src="{{ url_for('static', filename='images/' + resource.image) }}" 
+                     alt="{{ resource.title }}" class="img-fluid rounded">
+            </div>
+            {% endif %}
+            <div class="col-md-{% if resource.image %}8{% else %}12{% endif %}">
+                <p class="lead">{{ resource.description }}</p>
+                <div class="mt-4">
+                    {{ resource.content|safe }}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    {% if 'category' in resource %}
+    <div class="card-footer">
+        <h5>Categories:</h5>
+        <div>
+            {% for category in resource.category.split() %}
+            <span class="badge bg-primary me-2">{{ category }}</span>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<div class="card mt-4">
+    <div class="card-header">
+        <h4>Related Resources</h4>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <!-- This would typically be dynamically generated based on related resources -->
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Writing Assistant</h5>
+                        <p class="card-text">AI-powered tool to check your writing for grammar, style, and clarity improvements.</p>
+                        <a href="{{ url_for('resource_detail', resource_id='writing-assistant') }}" class="btn btn-outline-primary btn-sm">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Grammar Reference</h5>
+                        <p class="card-text">Comprehensive reference for English grammar rules, with examples and exercises.</p>
+                        <a href="{{ url_for('resource_detail', resource_id='grammar-reference') }}" class="btn btn-outline-primary btn-sm">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Book Club</h5>
+                        <p class="card-text">Join our community of English learners to discuss literature and improve reading skills.</p>
+                        <a href="{{ url_for('resource_detail', resource_id='book-club') }}" class="btn btn-outline-primary btn-sm">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <a href="{{ url_for('resources') }}" class="btn btn-primary">
+        <i class="fas fa-arrow-left me-2"></i>Back to Resources
+    </a>
+</div>
+{% endblock %}

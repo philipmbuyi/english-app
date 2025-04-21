@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='admin_style.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <header>
+        <h1>Student Management Dashboard</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#" data-section="student-list" class="active">Student List</a></li>
+            <li><a href="#" data-section="progress-tracking">Progress Tracking</a></li>
+            <li><a href="#" data-section="test-scheduling">Test Scheduling</a></li>
+            <li><a href="#" data-section="marks-management">Marks Management</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section id="student-list" class="dashboard-section">
+            <h2>Student List</h2>
+            <div id="student-table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Password</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="student-table-body">
+                        <!-- Student data will be loaded here dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="progress-tracking" class="dashboard-section" style="display: none;">
+            <h2>Progress Tracking</h2>
+            <div class="progress-filter">
+                <label for="student-progress-id">Student ID:</label>
+                <input type="number" id="student-progress-id" name="student-progress-id" required>
+                <button id="load-progress">Load Progress</button>
+            </div>
+            <canvas id="progressChart" width="400" height="200"></canvas>
+        </section>
+
+        <section id="test-scheduling" class="dashboard-section" style="display: none;">
+            <h2>Test Scheduling</h2>
+            <form id="test-schedule-form">
+                <label for="student-id">Student ID:</label>
+                <input type="number" id="student-id" name="student-id" required><br><br>
+                
+                <label for="test-name">Test Name:</label>
+                <input type="text" id="test-name" name="test-name" required><br><br>
+
+                <label for="test-date">Test Date:</label>
+                <input type="date" id="test-date" name="test-date" required><br><br>
+
+                <label for="test-time">Test Time:</label>
+                <input type="time" id="test-time" name="test-time" required><br><br>
+
+                <button type="submit">Schedule Test</button>
+            </form>
+            <div id="test-schedule-feedback"></div>
+        </section>
+
+        <section id="marks-management" class="dashboard-section" style="display: none;">
+            <h2>Marks Management</h2>
+            <div class="marks-filter">
+                <label for="student-marks-id">Student ID:</label>
+                <input type="number" id="student-marks-id" name="student-marks-id" required>
+                <button id="load-marks">Load Marks</button>
+            </div>
+            <table id="marks-table">
+                <thead>
+                    <tr>
+                        <th>Test Name</th>
+                        <th>Mark</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="marks-table-body">
+                </tbody>
+            </table>
+            <div id="marks-management-feedback"></div>
+        </section>
+    </main>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='admin_script.js') }}"></script>
+{% endblock %}

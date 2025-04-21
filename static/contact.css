@@ -1,0 +1,15 @@
+/* Contact page specific styles */
+.hover-shadow:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.contact-block {
+    display: block;
+    height: 100%;
+    color: inherit;
+}
+
+.contact-block:hover {
+    color: inherit;
+}
